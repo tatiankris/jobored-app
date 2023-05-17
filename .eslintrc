@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "react-app",
+    "react-app/jest"
+  ],
+  "rules": {
+    "no-console": "warn",
+    "no-alert": "warn",
+    "prefer-const": "error",
+//    "indent": ["warn", 2],
+    "comma-dangle": ["error", "never"],
+    "semi": ["warn", "never"],
+    "sort-imports": ["error", {
+      "ignoreCase": false,
+      "ignoreDeclarationSort": true,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["all", "multiple", "single", "none"],
+      "allowSeparatedGroups": false
+    }]
+
+  }
+}

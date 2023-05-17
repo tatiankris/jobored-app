@@ -1,0 +1,41 @@
+.headerBlock {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.links {
+    margin-right: 20%;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 30%;
+}
+
+.link {
+    display: block;
+    color: rgba(35, 33, 52, 1);
+    text-decoration: none;
+}
+
+.currentLink {
+
+    color: rgba(94, 150, 252, 1);
+}
+
+.link:active {
+    color: rgba(94, 150, 252, 1);
+
+}
+
+.link:hover {
+    color: rgba(94, 150, 252, 1);
+
+}

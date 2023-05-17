@@ -1,0 +1,49 @@
+.vacancy {
+    height: 137px;
+    margin: 16px 0;
+}
+
+.name {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(94, 150, 252, 1);
+    line-height: 24px;
+    margin-bottom: 12.5px;
+}
+
+.iconStar {
+    float: right;
+    width: 22px;
+}
+
+.iconPoint {
+    color: #7B7C88FF;
+}
+
+.iconMap {
+    color: rgba(172, 173, 185, 1);
+    float: left;
+    margin-right: 11.33px;
+}
+
+.salary {
+
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0px;
+
+
+}
+
+.day {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0px;
+
+}
+
+.groupInfo {
+    margin-bottom: 13px;
+}
