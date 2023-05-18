@@ -13,7 +13,7 @@ function CommonContainer({children, page}: CommonContainer) {
     const { classes } = useStyles()
 
     return (
-        <Container className={page === 'header' ? classes.containerHeader : classes.container} size={page === 'favorites' || 'vacancy' ? '51rem' : '70rem'} px={20}>
+        <Container className={page === 'header' ? classes.containerHeader : classes.container} size={page === 'favorites' || page === 'vacancy' ? '51rem' : '74rem'} px={20}>
             {children}
         </Container>
     )

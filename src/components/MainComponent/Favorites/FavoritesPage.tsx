@@ -1,11 +1,13 @@
 import React from 'react'
-import VacanciesList from "../../Vacancies/VacanciesLisl"
 import CommonPagination from "../../CommonComponents/CommonPagination"
 import CommonContainer from "../../CommonComponents/CommonContainer"
 import NoFavorites from "./NoFavorites"
 
 function FavoritesPage() {
 
+    const handlePageChange = (value: number) => {
+
+    }
 
     if (true) {
         return <NoFavorites/>
@@ -13,8 +15,8 @@ function FavoritesPage() {
     return (
         <CommonContainer page={'favorites'}>
             <div className={'FavoritesPage'}>
-                <VacanciesList/>
-                <CommonPagination/>
+                {/*<VacanciesList/>*/}
+                <CommonPagination pages={3} handlePageChange={handlePageChange}/>
             </div>
         </CommonContainer>
     )

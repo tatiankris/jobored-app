@@ -6,9 +6,17 @@ import {useNavigate} from "react-router-dom"
 import {JOB_SEARCH} from "../../MainComponent/MainComponent"
 
 type VacancyType = {
+    id: number
     variant: 'in-list' | 'in-page'
+    profession: string
+    firm: string
+    typeOfWork: string
+    paymentFrom: number
+    paymentTo: number
+    currency: string
+    town: string
 }
-function Vacancy({variant}: VacancyType) {
+function Vacancy({ id,variant, profession, town, typeOfWork, paymentFrom, paymentTo, currency}: VacancyType) {
 
     const useStyles = createStyles((theme) => ({
             vacancy: {
@@ -63,15 +71,21 @@ function Vacancy({variant}: VacancyType) {
     const navigate = useNavigate()
 
     return (
-        <Card onClick={() => {navigate(JOB_SEARCH + '/vacancy-name')}} padding={'24px'} radius={'12px'} className={styles.vacancy}>
-        <Text className={styles.name}>Менеджер-дизайнер<IconStar className={styles.iconStar}/></Text>
-
-       <Group className={styles.groupInfo} spacing={12}>
-           <Text className={styles.salary}>з/п от 70000 rub</Text>
-           <IconPointFilled className={styles.iconPoint} size={'1rem'} />
-           <Text className={styles.day}>Полный рабочий день</Text>
-       </Group>
-            <Text className={styles.location}><IconMapPin className={styles.iconMap} size={'1.4rem'} /> Новый Уренгой</Text>
+        <Card onClick={() => {
+          navigate(JOB_SEARCH + `/${id}`)}} padding={'24px'} radius={'12px'} className={styles.vacancy}>
+        <Text className={styles.name}>{profession}<IconStar className={styles.iconStar}/></Text>
+           {
+               (paymentFrom + paymentTo) > 0
+                   ? <Group className={styles.groupInfo} spacing={12}>
+                       <Text className={styles.salary}>{`з/п ${paymentFrom > 0 ? 'от ' + paymentFrom : ''} ${paymentTo > 0 ? 'до ' + paymentTo : ''} ${currency}`}</Text>
+                       <IconPointFilled className={styles.iconPoint} size={'1rem'} />
+                       <Text className={styles.day}>{typeOfWork}</Text>
+                   </Group>
+                   : <Group className={styles.groupInfo} spacing={12}>
+                       <Text className={styles.day}>{typeOfWork}</Text>
+                   </Group>
+           }
+            <Text className={styles.location}><IconMapPin className={styles.iconMap} size={'1.4rem'} />{town}</Text>
         </Card>
     )
 }

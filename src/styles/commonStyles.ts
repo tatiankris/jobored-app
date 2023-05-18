@@ -14,7 +14,7 @@ export const useStyles = createStyles((theme) => ({
 
         minHeight: 'calc(100vh - 84px)',
         // backgroundColor: 'rgba(161,132,210,0.61)',
-
+        position: 'relative',
         paddingTop: '40px',
         paddingBottom: '44px'
     },

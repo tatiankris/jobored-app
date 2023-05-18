@@ -1,18 +1,17 @@
-import { Card } from '@mantine/core'
+import {Card, TypographyStylesProvider} from '@mantine/core'
 import React from 'react'
 import style from './VacancyInfo.module.css'
 
 type VacancyInfo = {
-
+    text: string
 }
-function VacancyInfo(props: VacancyInfo) {
+function VacancyInfo({text}: VacancyInfo) {
 
     return (
         <Card padding={'24px'} radius={'12px'} className={style.vacancyInfo}>
-        kjhkjh
-            kjhkjh
-            kjhkjn
-
+            <TypographyStylesProvider className={style.typographyStyles}>
+                <div dangerouslySetInnerHTML={{__html: text}}/>
+            </TypographyStylesProvider>
         </Card>
     )
 }

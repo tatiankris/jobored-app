@@ -14,7 +14,7 @@ function MainComponent() {
             <Route path="/" element={<Navigate to={JOB_SEARCH}/> } />
             <Route path={JOB_SEARCH} element={<JobSearchPage/>}/>
             <Route path={FAVORITES} element={<FavoritesPage/>}/>
-            <Route path={JOB_SEARCH + '/:name'} element={<VacancyPage/>}/>
+            <Route path={JOB_SEARCH + '/:vacancy_id'} element={<VacancyPage/>}/>
         </Routes>
     )
 }

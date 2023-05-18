@@ -1,3 +1,12 @@
 .vacancyInfo {
 
 }
+
+.typographyStyles {
+    line-height: 20px;
+
+}
+
+.typographyStyles b {
+  font-size: 20px;
+}
