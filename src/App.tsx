@@ -1,4 +1,4 @@
-import {Container, Header} from '@mantine/core'
+import {Box, Container, Header, Loader, LoadingOverlay, Modal} from '@mantine/core'
 import React, {useEffect} from 'react'
 import './App.css'
 import HeaderComponent from './components/HeaderComponent/HeaderComponent'
@@ -8,21 +8,30 @@ import CommonContainer from "./components/CommonComponents/CommonContainer"
 import PageContainer from "./components/CommonComponents/PageContainer"
 import {authTC} from "./store/reducers/auth-reducer"
 import {useDispatch} from "react-redux"
-import { useAppDispatch } from './hooks/hooks'
+import {useAppDispatch, useAppSelector} from './hooks/hooks'
+import {getFavoritesTC, getIdsFavoritesTC} from "./store/reducers/favorites-reducer"
+import {AppRootStateType} from "./store/store"
 
 
 function App() {
 
     const {classes} = useStyles()
+    const appStatus = useAppSelector((state: AppRootStateType) => state.appReducer.status)
+    const appErr = useAppSelector((state: AppRootStateType) => state.appReducer.errors)
+
+    console.log('appErr', appErr)
+
 
     const dispatch = useAppDispatch()
     useEffect(() => {
-        // dispatch(authTC())
+        dispatch(authTC())
+        dispatch(getIdsFavoritesTC())
     }, [])
 
     return (
 
         <div className={classes.app}>
+            {appStatus === 'loading' && <LoadingOverlay visible={true} overlayBlur={1}/>}
             <HeaderComponent/>
             <PageContainer>
 

@@ -3,7 +3,6 @@ import {Navigate, Route, Routes} from "react-router-dom"
 import FavoritesPage from './Favorites/FavoritesPage'
 import JobSearchPage from './JobSearch/JobSearchPage'
 import VacancyPage from "../Vacancies/VacancyPage/VacancyPage"
-
 export const JOB_SEARCH = "/search-vacancies"
 export const FAVORITES = '/favorites'
 

@@ -1,12 +1,11 @@
 import React, {ReactNode} from 'react'
 import {useStyles} from "../../styles/commonStyles"
 
-type PageContainer = {
+type PageContainerPropsType = {
     children: ReactNode
 }
 
-
-function PageContainer({children}: PageContainer) {
+function PageContainer({children, ...props}: PageContainerPropsType) {
 
     const { classes } = useStyles()
 

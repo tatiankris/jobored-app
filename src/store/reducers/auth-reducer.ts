@@ -1,41 +1,53 @@
 import {AppThunk} from "../store"
-import {authAPI, vacanciesAPI} from "../../api/search-api"
 import {AxiosError} from "axios"
+import {setAppErrorAC, setAppStatusAC} from "./app-reducer"
+import { authAPI } from "../../api/auth-api"
 
-type InitialState = {
-
+type InitialStateType = {
+    token: string | null
+}
+const InitialState = {
+    token: null
 }
 
-export const authReducer = (state: InitialState, action: AuthActionType) => {
+export const authReducer = (state: InitialStateType = InitialState, action: AuthActionType): InitialStateType => {
     switch (action.type) {
-        case 'AUTH_STATUS': {
-                return {...state}
+        case 'SET_AUTH_STATUS': {
+                return {...state, token: action.token}
         }
         default:
             return state
-
     }
-
 }
 
-const AuthStatusAC = () => {
+const setAuthStatusAC = (token: string) => {
     return {
-        type: 'AUTH_STATUS'
+        type: 'SET_AUTH_STATUS',
+        token
     }
-
 }
+
 export const authTC = (): AppThunk => (dispatch) => {
 
-    authAPI.getAuth()
+    dispatch(setAppStatusAC('loading'))
+    const access_token = localStorage.getItem('access_token')
+    !access_token && authAPI.getAuth()
         .then((res) => {
             console.log(res.data)
-            // localStorage.setItem('access_token', res.data.access_token)
-        })
-        .catch((err: AxiosError<{ error: string }>) => {
+
+            localStorage.setItem('access_token', res.data.access_token)
+            dispatch(setAuthStatusAC(res.data.access_token))
 
         })
-        .finally(() => {})
+        .catch((err: AxiosError<{ message: string }>) => {
 
+            const error = err.message
+            dispatch(setAppErrorAC(error ?error : 'Some error occurred'))
+
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC('prepared'))
+        })
 }
 
-export type AuthActionType = ReturnType< typeof AuthStatusAC>
+export type AuthActionType = ReturnType< typeof setAuthStatusAC>

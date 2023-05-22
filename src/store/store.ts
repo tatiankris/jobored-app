@@ -4,12 +4,14 @@ import {appReducer} from "./reducers/app-reducer"
 import {authReducer} from "./reducers/auth-reducer"
 import {vacanciesReducer} from "./reducers/vacancies-reducer"
 import {searchReducer} from "./reducers/search-reducer"
+import {favoritesReducer} from "./reducers/favorites-reducer"
 
 const rootReducer = combineReducers({
-    // appReducer: appReducer,
-    // authReducer: authReducer,
+    appReducer: appReducer,
+    authReducer: authReducer,
     vacanciesReducer: vacanciesReducer,
-    searchReducer: searchReducer
+    searchReducer: searchReducer,
+    favoritesReducer: favoritesReducer
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunk))

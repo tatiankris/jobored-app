@@ -5,7 +5,6 @@ import CommonContainer from "../../CommonComponents/CommonContainer"
 import VacancyInfo from "../VacancyInfo/VacancyInfo"
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks"
 import {AppRootStateType} from "../../../store/store"
-import {log} from "util"
 import {getCurrentVacancyTC} from "../../../store/reducers/vacancies-reducer"
 
 function VacancyPage() {
@@ -18,23 +17,18 @@ function VacancyPage() {
         vacancy_id && dispatch(getCurrentVacancyTC(vacancy_id))
     }, [])
 
-    const v = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.currentVacancy)
-    console.log('v', v)
+    const vacancy = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.currentVacancy)
 
     return (
         <CommonContainer page={'vacancy'}>
 
-            {
-                v
-                    ?<div className={"VacancyPage"}>
-                        <Vacancy id={v.id} variant={'in-page'} profession={v.profession}
-                                 firm={v.firm_name} typeOfWork={v.type_of_work.title} paymentFrom={v.payment_from}
-                                 paymentTo={v.payment_to} currency={v.currency} town={v.town.title} />
-
-                        <VacancyInfo text={v.vacancyRichText} />
-                    </div>
-                    : <div>
-                            no vacancy
+            {vacancy && <div className={"VacancyPage"}>
+                        <Vacancy vacancyObject={vacancy} id={vacancy.id} variant={'in-page'}
+                                 profession={vacancy.profession} firm={vacancy.firm_name}
+                                 typeOfWork={vacancy.type_of_work.title} paymentFrom={vacancy.payment_from}
+                                 paymentTo={vacancy.payment_to} currency={vacancy.currency}
+                                 town={vacancy.town.title} />
+                        <VacancyInfo text={vacancy.vacancyRichText} />
                     </div>
             }
 

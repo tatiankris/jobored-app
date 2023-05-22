@@ -6,7 +6,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 
 .group {
@@ -30,5 +29,4 @@
     font-size: 14px;
     line-height: 21.7px;
     font-weight: 600;
-
 }

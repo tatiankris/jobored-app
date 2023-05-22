@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import SearchFilters from './SearchFilters'
 import VacanciesList from "../../Vacancies/VacanciesLisl"
 import SearchField from "./SearchField"
@@ -8,6 +8,10 @@ import CommonContainer from "../../CommonComponents/CommonContainer"
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks"
 import {getCataloguesTC, getVacanciesTC} from "../../../store/reducers/vacancies-reducer"
 import {AppRootStateType} from "../../../store/store"
+import EmptyPage from "../../CommonComponents/EmptyPage"
+import {setVacanciesPage} from "../../../store/reducers/search-reducer"
+import {useDisclosure, useMediaQuery} from "@mantine/hooks"
+import {Button, Group, Modal} from "@mantine/core"
 
 function JobSearchPage() {
 
@@ -15,6 +19,7 @@ function JobSearchPage() {
     const catalogues = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.cataloguesList)
     const vacancies = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.vacancies)
     const searchParams = useAppSelector((state: AppRootStateType) => state.searchReducer)
+    const iSmallScreen = useMediaQuery('(max-width: 946px)')
 
     useEffect(() => {
         dispatch(getCataloguesTC())
@@ -24,27 +29,34 @@ function JobSearchPage() {
         dispatch(getVacanciesTC())
     }, [searchParams])
 
-
-
-    const [itemOffset, setItemOffset] = useState(0)
-    const endOffset = itemOffset + 4
-    const currentItems = vacancies.slice(itemOffset, endOffset)
-    const pageCount = Math.ceil(vacancies.length / 4)
+    const pages = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.pages)
     const handlePageChange = (value: number) => {
-        const newOffset = (value * 4) % vacancies.length
-        setItemOffset(newOffset)
+        const page = value - 1
+        dispatch(setVacanciesPage(page))
     }
 
+    const [opened, { open, close }] = useDisclosure(false)
     return (
         <CommonContainer page={'jobSearch'}>
             <div className={style.jobSearch}>
-                <SearchFilters catalogues={catalogues} />
+                {iSmallScreen ? <Modal opened={opened} onClose={close}>
+                        <SearchFilters cataloguesData={catalogues} />
+                </Modal>
+                : <SearchFilters cataloguesData={catalogues} />
+                }
+                {iSmallScreen && <Group position="center">
+                    <Button onClick={open}>Фильтры</Button>
+                </Group>}
                 <div className={style.group}>
                     <div>
                         <SearchField/>
-                        <VacanciesList vacancies={currentItems}/>
+                        {
+                            vacancies.length > 0
+                            ? <VacanciesList vacancies={vacancies}/>
+                            : <EmptyPage page={'search'}/>
+                        }
                     </div>
-                    <CommonPagination pages={pageCount} handlePageChange={handlePageChange}/>
+                    {pages > 0.9 && <CommonPagination pages={pages} handlePageChange={handlePageChange}/>}
                 </div>
             </div>
         </CommonContainer>

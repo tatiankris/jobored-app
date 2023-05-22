@@ -8,7 +8,7 @@
 }
 
 .links {
-    margin-right: 20%;
+    margin-right: 38%;
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
@@ -16,7 +16,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 30%;
+    width: 270px;
 }
 
 .link {
@@ -26,16 +26,32 @@
 }
 
 .currentLink {
-
     color: rgba(94, 150, 252, 1);
 }
 
 .link:active {
     color: rgba(94, 150, 252, 1);
-
 }
 
 .link:hover {
     color: rgba(94, 150, 252, 1);
-
 }
+
+@media screen and (max-width: 946px) {
+    .links {
+        width: 50%;
+        margin-right: 13%;
+    }
+}
+
+.burgerIcon {
+    transform: rotate(90deg);
+}
+
+@media screen and (max-width: 512px) {
+    .links {
+        width: 2px;
+    }
+}
+
+

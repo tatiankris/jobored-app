@@ -2,10 +2,10 @@ import {Card, TypographyStylesProvider} from '@mantine/core'
 import React from 'react'
 import style from './VacancyInfo.module.css'
 
-type VacancyInfo = {
+type VacancyInfoPropsType = {
     text: string
 }
-function VacancyInfo({text}: VacancyInfo) {
+function VacancyInfo({text, ...props}: VacancyInfoPropsType) {
 
     return (
         <Card padding={'24px'} radius={'12px'} className={style.vacancyInfo}>

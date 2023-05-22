@@ -1,62 +1,55 @@
 import React, {useRef} from 'react'
 import style from './SearchFilters.module.css'
 import {useForm} from "@mantine/form"
-import {Button, Card, NumberInput, NumberInputHandlers, Select, Title} from "@mantine/core"
-
+import {Button, Card, NumberInput, NumberInputHandlers, Select, Title, UnstyledButton} from "@mantine/core"
 import { IconChevronDown, IconChevronUp, IconX } from '@tabler/icons-react'
-import {CatalogueItemType, getVacanciesTC} from "../../../store/reducers/vacancies-reducer"
-import {useAppDispatch} from "../../../hooks/hooks"
-import {setFiltersAC} from "../../../store/reducers/search-reducer"
+import {useAppDispatch, useAppSelector} from "../../../hooks/hooks"
+import {resetFiltersAC, setFiltersAC} from "../../../store/reducers/search-reducer"
+import {AppRootStateType} from "../../../store/store"
+import { CatalogueItemType } from '../../../api/vacancies-api'
+import { useMediaQuery } from '@mantine/hooks'
 
 export type FilterValuesType = {
-    catalogues: string | null | number,
+    catalogues: null | number,
     payment_from: number | '',
     payment_to: number | ''
 }
-type SearchFilters  = {
-    catalogues: Array<CatalogueItemType>
+type SearchFiltersPropsType  = {
+    cataloguesData: Array<CatalogueItemType>
 }
-function SearchFilters({catalogues}: SearchFilters) {
+function SearchFilters({cataloguesData, ...props}: SearchFiltersPropsType) {
 
-        const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch()
+    const iSmallScreen = useMediaQuery('(max-width: 560px)')
+    const {catalogues, payment_from, payment_to} = useAppSelector((state: AppRootStateType) => state.searchReducer)
 
-        const form = useForm({
-            initialValues: {
-                catalogues: null,
-                payment_from: '',
-                payment_to: ''
-            } as FilterValuesType,
+    const form = useForm({
+        initialValues: {
+            catalogues: catalogues,
+            payment_from: payment_from,
+            payment_to: payment_to
+        } as FilterValuesType,
 
-            validate: {
-
-            }
-        })
+        validate: {}
+    })
 
     const onSubmitHandler = () => {
 
-            const {catalogues, payment_from, payment_to} = form.values
-
-            dispatch(setFiltersAC({
-                catalogues: catalogues ? +catalogues : null,
-                payment_from,
-                payment_to
-            }))
-            // dispatch(getVacanciesTC())
-
-    }
-
-    const onResetHandler = () => {
-        form.reset()
         const {catalogues, payment_from, payment_to} = form.values
+
         dispatch(setFiltersAC({
-            catalogues,
+            catalogues: catalogues ? +catalogues : null,
             payment_from,
             payment_to
         }))
     }
 
+    const onResetHandler = () => {
+        form.reset()
+        dispatch(resetFiltersAC())
+    }
 
-        const salaryToHandler = useRef<NumberInputHandlers>()
+    const salaryToHandler = useRef<NumberInputHandlers>()
     const salaryFromHandler = useRef<NumberInputHandlers>()
 
     return (
@@ -64,23 +57,28 @@ function SearchFilters({catalogues}: SearchFilters) {
             <form onSubmit={form.onSubmit(onSubmitHandler)}>
                 <div className={style.group}>
                     <Title className={style.title}>Фильтры</Title>
-                    <Button className={style.buttonReset} variant="subtle" type="reset" onClick={onResetHandler}
-                    >Сбросить все<IconX height={16}/></Button>
+                    <UnstyledButton className={style.buttonReset} variant="subtle" type="reset" onClick={onResetHandler}
+                    >Сбросить все<IconX className={style.iconX} height={16}/></UnstyledButton>
                 </div>
-                <Title className={style.inputLabel}>Отрасль</Title>
+                    <Title className={style.inputLabel}>Отрасль</Title>
 
                 <Select
+                    size={iSmallScreen ? 'sm' : 'md'}
+                    data-elem={"industry-select"}
                     searchable
                     className={`${style.input} ${style.inputLast}`}
                     placeholder="Выберете отрасль"
-                    data={catalogues.map((m) => {return {value: String(m.key), label: m.title}})}
+                    data={cataloguesData.map((m) => {return {value: String(m.key), label: m.title}})}
                     rightSection={<IconChevronDown className={style.icon} size="1.2rem" />}
                     styles={{ rightSection: { pointerEvents: 'none' } }}
                     rightSectionWidth={40}
                     {...form.getInputProps('catalogues')}
                 />
                 <Title className={style.inputLabel}>Оклад</Title>
+                <div className={style.smallScreenGroup}>
                 <NumberInput
+                    size={iSmallScreen ? 'sm' : 'md'}
+                    data-elem={"salary-from-input"}
                     handlersRef={salaryFromHandler}
                     rightSection={<div className={style.numberInputIcons}>
                         <IconChevronUp className={style.icon} size="0.8rem"
@@ -95,6 +93,8 @@ function SearchFilters({catalogues}: SearchFilters) {
                     {...form.getInputProps('payment_from')}
                 />
                 <NumberInput
+                    size={iSmallScreen ? 'sm' : 'md'}
+                    data-elem={"salary-to-input"}
                     handlersRef={salaryToHandler}
                     rightSection={<div className={style.numberInputIcons}>
                         <IconChevronUp className={style.icon} size="0.8rem"
@@ -108,8 +108,9 @@ function SearchFilters({catalogues}: SearchFilters) {
                     step={100}
                     {...form.getInputProps('payment_to')}
                 />
-                <Button className={style.buttonSubmit} type="submit">Применить</Button>
+                <Button data-elem={"search-button"} className={style.buttonSubmit} type="submit">Применить</Button>
 
+                   </div>
             </form>
         </Card>
     )

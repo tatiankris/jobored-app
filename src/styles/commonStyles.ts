@@ -1,4 +1,4 @@
-import { createStyles, rem } from '@mantine/core'
+import { createStyles } from '@mantine/core'
 
 
 
@@ -11,9 +11,7 @@ export const useStyles = createStyles((theme) => ({
         fontFamily: 'Inter'
     },
     pageContainer: {
-
         minHeight: 'calc(100vh - 84px)',
-        // backgroundColor: 'rgba(161,132,210,0.61)',
         position: 'relative',
         paddingTop: '40px',
         paddingBottom: '44px'
@@ -24,10 +22,5 @@ export const useStyles = createStyles((theme) => ({
     container: {
         position: 'relative',
         minHeight: 'calc(100vh - 168px)'
-        // backgroundColor: '#9146ff'
-        // height: '100%'
-        // width: '100%',
-    },
-
-    page: {}
+    }
 }))

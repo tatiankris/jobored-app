@@ -1,19 +1,25 @@
 import { Pagination } from '@mantine/core'
-import React, { useState } from 'react'
+import React from 'react'
 import style from './CommonPagination.module.css'
-import vacanciesLisl from "../Vacancies/VacanciesLisl"
+import {useMediaQuery} from "@mantine/hooks"
 
-type CommonPagination = {
-    handlePageChange: (value: number) => void
+type CommonPaginationPropsType = {
     pages: number
+    handlePageChange: (value: number) => void
 }
 
-function CommonPagination({handlePageChange}: CommonPagination) {
+function CommonPagination({ pages, handlePageChange, ...props }: CommonPaginationPropsType) {
 
+    const iSmallScreen = useMediaQuery('(max-width: 560px)')
+    const iSmallerScreen = useMediaQuery('(max-width: 350px)')
 
     return (
-        <Pagination onChange={handlePageChange}
-                    className={style.pagination} total={3} />
+        <Pagination size={iSmallScreen ? 'sm' : 'md'}
+                    onChange={handlePageChange}
+                    className={style.pagination}
+                    total={pages}
+                    withControls={iSmallerScreen ? false : true}
+        />
     )
 }
 

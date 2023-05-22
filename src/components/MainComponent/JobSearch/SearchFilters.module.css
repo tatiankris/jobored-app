@@ -12,31 +12,14 @@
 }
 
 .buttonReset {
-    text-align: center;
-    outline: none;
-    padding: 0;
     color: rgba(172, 173, 185, 1);
     font-size: 14px;
     font-weight: 500;
-
 }
 
-.buttonReset :hover {
-    border: none;
-    outline: none;
-    background-color: white;
-    padding: 0;
-    text-decoration: none;
+.iconX {
+    float: right;
 }
-
-.buttonReset :active {
-    border: none;
-    outline: none;
-    background-color: white;
-    padding: 0;
-    text-decoration: none;
-}
-
 .title {
     font-size: 20px;
     font-weight: 700;
@@ -63,6 +46,7 @@
 
 
 .input {
+
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
@@ -79,6 +63,8 @@
 
 .buttonSubmit {
     width: 100%;
+    height: 40px;
+    font-size: 14px;
 }
 
 .buttonReset :hover {
@@ -86,4 +72,21 @@
     background-color: white;
     outline: none;
     text-decoration: none;
+}
+
+.filterIcon {
+    float: right;
+    margin-left: 14px;
+}
+
+@media screen and (max-width: 560px) {
+    .title {
+        font-size: 16px;
+    }
+    .inputLabel {
+        font-size: 14px;
+    }
+    .input {
+        font-size: 12px;
+    }
 }
