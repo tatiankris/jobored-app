@@ -7,9 +7,12 @@ import styles from './Header.module.css'
 import {FAVORITES, JOB_SEARCH} from "../MainComponent/MainComponent"
 import {useMediaQuery} from "@mantine/hooks"
 import { IconMenu } from "@tabler/icons-react"
+import {useAppDispatch} from "../../hooks/hooks";
+import {deleteToken} from "../../store/reducers/auth-reducer";
 
 function HeaderComponent() {
 
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const location = useLocation().pathname
     const iSmallScreen = useMediaQuery('(max-width: 512px)')
@@ -24,6 +27,7 @@ function HeaderComponent() {
         <CommonContainer page={'header'}>
             <div className={styles.headerBlock}>
                 <Logo className={styles.logo} onClick={inClickHandler}/>
+                <button onClick={() => {dispatch(deleteToken())}}>delete</button>
                    {iSmallScreen
                        ? <Menu opened={opened} onChange={setOpened} shadow="md" width={200}>
                            <Menu.Target>

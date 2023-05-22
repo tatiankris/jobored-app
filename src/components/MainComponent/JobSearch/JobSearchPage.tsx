@@ -46,16 +46,16 @@ function JobSearchPage() {
                 }
                 {iSmallScreen && <Group position="center">
                     <Button onClick={open}>Фильтры</Button>
+
                 </Group>}
+
                 <div className={style.group}>
-                    <div>
                         <SearchField/>
                         {
                             vacancies.length > 0
                             ? <VacanciesList vacancies={vacancies}/>
                             : <EmptyPage page={'search'}/>
                         }
-                    </div>
                     {pages > 0.9 && <CommonPagination pages={pages} handlePageChange={handlePageChange}/>}
                 </div>
             </div>

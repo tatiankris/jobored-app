@@ -27,6 +27,10 @@ const setAuthStatusAC = (token: string) => {
     }
 }
 
+export const deleteToken = (): AppThunk => (dispatch) => {
+    localStorage.removeItem('access_token')
+}
+
 export const authTC = (): AppThunk => (dispatch) => {
 
     dispatch(setAppStatusAC('loading'))

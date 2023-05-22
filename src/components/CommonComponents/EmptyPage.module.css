@@ -30,3 +30,11 @@
     line-height: 21.7px;
     font-weight: 600;
 }
+
+@media screen and (max-width: 946px) {
+    .noFavorites {
+        position: relative;
+        transform: translate(-50%, 0%);
+        height: calc(100vh - 172px);
+    }
+}
