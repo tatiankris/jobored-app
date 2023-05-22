@@ -8,20 +8,17 @@ type InitialStateType = {
     idsFavorites: Array<number>
     favorites: VacanciesListType
     pages: number
-    params: {
-        page: number,
-        count: 4
-    }
+    page: number
+    count: 4
+
 }
 
 const InitialState = {
     idsFavorites: [],
     favorites: [],
     pages: 0,
-    params: {
-        page: 0,
-        count: 4
-    }
+    page: 0,
+    count: 4
 
 
 } as InitialStateType
@@ -38,14 +35,14 @@ export const favoritesReducer = (state:InitialStateType = InitialState, action: 
             return {...state, pages: action.pages}
         }
         case 'SET_FAVORITE_PAGE': {
-            return {...state, params: {...state.params, page: action.page }}
+            return {...state, page: action.page }
         }
-        // case 'SET_FAVORITE': {
-        //     return {...state, favorites : [...state.favorites, action.id]}
-        // }
-        // case 'DELETE_FAVORITE': {
-        //     return {...state, favorites: state.favorites.filter(s => s !== action.id)}
-        // }
+        case 'SET_FAVORITE': {
+            return {...state, idsFavorites : [...state.idsFavorites, action.id]}
+        }
+        case 'DELETE_FAVORITE': {
+            return {...state, idsFavorites: state.idsFavorites.filter(s => s !== action.id)}
+        }
 
         default:
             return state
@@ -77,19 +74,19 @@ const setIdsFavoritesAC = (idsFavorites: Array<number>) => {
     } as const
 }
 
-// const setFavoriteAC = (id: number) => {
-//     return {
-//         type: 'SET_FAVORITE',
-//         id
-//     } as const
-// }
-//
-// const deleteFavoriteAC = (id: number) => {
-//     return {
-//         type: 'DELETE_FAVORITE',
-//         id
-//     } as const
-// }
+const setFavoriteAC = (id: number) => {
+    return {
+        type: 'SET_FAVORITE',
+        id
+    } as const
+}
+
+const deleteFavoriteAC = (id: number) => {
+    return {
+        type: 'DELETE_FAVORITE',
+        id
+    } as const
+}
 
 // export const getFavoritesTC = (): AppThunk => (dispatch) => {
 //
@@ -109,17 +106,16 @@ export const getFavoritesTC = (): AppThunk => (dispatch,
                                                getState: () => AppRootStateType ) => {
     dispatch(setAppStatusAC('loading'))
 
-    const local = localStorage.getItem('favorites_vacancies')
-    const idsFavorites = local ? JSON.parse(local) : []
+    // const local = localStorage.getItem('favorites_vacancies')
+    // const idsFavorites = local ? JSON.parse(local) : []
 
-    const paramsPages = getState().favoritesReducer.params
-    const params = { ...paramsPages, 'ids': idsFavorites }
+    const {page, count, idsFavorites} = getState().favoritesReducer
 
-    vacanciesAPI.getFavorites(params)
+    vacanciesAPI.getFavorites({ page, count, 'ids': idsFavorites })
         .then((res) => {
 
             const allPages = res.data.total / 4
-            const pages = allPages > 126 ? 126 : allPages
+            const pages = allPages > 125 ? 125 : allPages
             dispatch(setPagesCountFavoritesAC(pages))
             console.log('data-favorites',res.data)
 
@@ -143,8 +139,8 @@ export const setFavoriteTC = (favorite: VacancyType): AppThunk => (dispatch) => 
     const favorites = local ? JSON.parse(local) : []
     const newFavorites = [...favorites, favorite.id]
     localStorage.setItem('favorites_vacancies', JSON.stringify(newFavorites))
-    // dispatch(setFavoriteAC(favorite))
-    dispatch(getFavoritesTC())
+    dispatch(setFavoriteAC(favorite.id))
+    // dispatch(getFavoritesTC())
 }
 
 export const deleteFavoriteTC = (id: number): AppThunk => (dispatch) => {
@@ -156,11 +152,11 @@ export const deleteFavoriteTC = (id: number): AppThunk => (dispatch) => {
     const newFavorites = favorites.filter((e: number) => e !== id)
     console.log(newFavorites)
     localStorage.setItem('favorites_vacancies', JSON.stringify(newFavorites))
-    // dispatch(deleteFavoriteAC(id))
-    dispatch(getFavoritesTC())
+    dispatch(deleteFavoriteAC(id))
+    // dispatch(getFavoritesTC())
 }
 
 
 type FavoritesActionType = ReturnType<typeof setFavoritesAC> | ReturnType<typeof setPagesCountFavoritesAC>
     | ReturnType<typeof setFavoritesPageAC> | ReturnType<typeof setIdsFavoritesAC>
-    // | ReturnType<typeof setFavoriteAC> | ReturnType<typeof deleteFavoriteAC>
+    | ReturnType<typeof setFavoriteAC> | ReturnType<typeof deleteFavoriteAC>

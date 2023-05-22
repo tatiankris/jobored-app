@@ -17,7 +17,7 @@ function CommonPagination({ pages, handlePageChange, ...props }: CommonPaginatio
         <Pagination size={iSmallScreen ? 'sm' : 'md'}
                     onChange={handlePageChange}
                     className={style.pagination}
-                    total={pages}
+                    total={Math.ceil(pages)}
                     withControls={iSmallerScreen ? false : true}
         />
     )

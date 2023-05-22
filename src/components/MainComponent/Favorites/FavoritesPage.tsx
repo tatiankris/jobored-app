@@ -9,16 +9,26 @@ import {getFavoritesTC, getIdsFavoritesTC, setFavoritesPageAC} from "../../../st
 import style from './FavoritesPage.module.css'
 function FavoritesPage() {
 
-    useEffect(() => {
-        dispatch(getFavoritesTC())
-        dispatch(getIdsFavoritesTC())
-    }, [])
+
+
 
     const dispatch = useAppDispatch()
     const favorites = useAppSelector((state: AppRootStateType) => state.favoritesReducer.favorites)
 
+    const page = useAppSelector((state: AppRootStateType) => state.favoritesReducer.page)
+    const idsFavorites = useAppSelector((state: AppRootStateType) => state.favoritesReducer.idsFavorites)
+
+    useEffect(() => {
+        dispatch(getFavoritesTC())
+        // dispatch(getIdsFavoritesTC())
+    }, [page, idsFavorites])
+
     const pages = useAppSelector((state: AppRootStateType) => state.favoritesReducer.pages)
+    console.log('pages', pages)
+
     const handlePageChange = (value: number) => {
+        console.log('value', value)
+
         const page = value - 1
         dispatch(setFavoritesPageAC(page))
     }
@@ -30,7 +40,11 @@ function FavoritesPage() {
         <CommonContainer page={'favorites'}>
             <div className={style.favoritesPage}>
                 <VacanciesList vacancies={favorites}/>
-                <CommonPagination pages={pages} handlePageChange={handlePageChange}/>
+
+            <div className={style.pagination}>
+                {pages > 1 && <CommonPagination pages={pages} handlePageChange={handlePageChange}/>}
+
+            </div>
             </div>
         </CommonContainer>
     )

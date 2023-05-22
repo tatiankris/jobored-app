@@ -91,7 +91,7 @@ export const getVacanciesTC = (page?: number): AppThunk => (dispatch,
         .then((res) => {
 
             const allPages = res.data.total / 4
-            const pages = allPages > 126 ? 126 : allPages
+            const pages = allPages > 125 ? 125 : allPages
             dispatch(setPagesCountAC(pages))
 
             const vacancies = res.data.objects

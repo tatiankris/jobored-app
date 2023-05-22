@@ -7,8 +7,8 @@ import styles from './Header.module.css'
 import {FAVORITES, JOB_SEARCH} from "../MainComponent/MainComponent"
 import {useMediaQuery} from "@mantine/hooks"
 import { IconMenu } from "@tabler/icons-react"
-import {useAppDispatch} from "../../hooks/hooks";
-import {deleteToken} from "../../store/reducers/auth-reducer";
+import {useAppDispatch} from "../../hooks/hooks"
+import {deleteToken} from "../../store/reducers/auth-reducer"
 
 function HeaderComponent() {
 
