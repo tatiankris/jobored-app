@@ -2,9 +2,10 @@ import {AppThunk} from "../store"
 import {AxiosError} from "axios"
 import {isInitializedAC, setAppErrorAC, setAppStatusAC} from "./app-reducer"
 import { authAPI } from "../../api/auth-api"
+import {Debugger} from "inspector";
 
 type InitialStateType = {
-    token: AccessTokenType
+    token: AccessTokenType | null
 }
 export type AccessTokenType = {
     access_token: string
@@ -13,7 +14,7 @@ export type AccessTokenType = {
     reg_user_resumes_count: number
     token_type: string
     ttl: number
-} | null
+}
 
 const InitialState = {
     token: null
@@ -40,26 +41,44 @@ export const deleteToken = (): AppThunk => (dispatch) => {
     localStorage.removeItem('access_token')
 }
 
+export const initializeTC =  (): AppThunk  => async (dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+// debugger
+    const token = await localStorage.getItem('access_token')
+    console.log('ТОКЕН С AWAIT', token)
+
+    let parsed = false
+
+    try {
+        token && JSON.parse(token)
+        parsed = true
+    } catch {
+        parsed = false
+    }
+
+    const tokenObj = parsed && token ? JSON.parse(token) : null
+
+    const tokenFail = !tokenObj || !tokenObj.token_type || !tokenObj.access_token || !tokenObj.ttl
+    const ttlFail = tokenObj && tokenObj.ttl && tokenObj.ttl < Date.now()/1000
+
+    const authorize = tokenFail || ttlFail
+
+    !authorize && dispatch(setAccessTokenAC(tokenObj))
+    && dispatch(isInitializedAC()) &&  dispatch(setAppStatusAC('prepared'))
+
+    authorize && dispatch(authTC())
+}
+
 export const authTC = (): AppThunk => (dispatch) => {
 
-
     dispatch(setAppStatusAC('loading'))
-
-    const token = localStorage.getItem('access_token')
-
-    const access_token = token  ? JSON.parse(token) : null
-
-    const ttlFail = access_token && access_token.ttl < Date.now()/1000
-    const authorize = !access_token || ttlFail
-    access_token && console.log('ttl', access_token.ttl, Date.now()/1000)
-
-    !authorize && dispatch(setAccessTokenAC(access_token)) && dispatch(isInitializedAC())
-
-    authorize && authAPI.getAuth()
+        authAPI.getAuth()
         .then((res) => {
-            console.log('ОБЪЕКТ ТОКЕНА', res.data)
 
+
+            localStorage.getItem('access_token') !== null && localStorage.removeItem('access_token')
             localStorage.setItem('access_token', JSON.stringify(res.data))
+            console.log('ОБЪЕКТ ТОКЕНА', localStorage.getItem('access_token') )
             dispatch(setAccessTokenAC(res.data))
 
         }).then(() => {

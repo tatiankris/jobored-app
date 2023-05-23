@@ -6,7 +6,7 @@ import MainComponent from './components/MainComponent/MainComponent'
 import { useStyles } from './styles/commonStyles'
 import CommonContainer from "./components/CommonComponents/CommonContainer"
 import PageContainer from "./components/CommonComponents/PageContainer"
-import {authTC, deleteToken} from "./store/reducers/auth-reducer"
+import {authTC, deleteToken, initializeTC} from "./store/reducers/auth-reducer"
 import {useDispatch} from "react-redux"
 import {useAppDispatch, useAppSelector} from './hooks/hooks'
 import {getFavoritesTC, getIdsFavoritesTC} from "./store/reducers/favorites-reducer"
@@ -25,9 +25,8 @@ function App() {
 
     const dispatch = useAppDispatch()
     useEffect(() => {
-        dispatch(deleteToken())
-        // !isInitialized && dispatch(authTC())
-        // dispatch(getIdsFavoritesTC())
+        !isInitialized && dispatch(initializeTC())
+        dispatch(getIdsFavoritesTC())
     }, [isInitialized])
 
     return (
