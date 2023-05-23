@@ -1,7 +1,6 @@
 import {instance} from "./request-instances"
 
 export const authAPI = {
-
     getAuth() {
         return instance.get<AuthResponseType>("oauth2/password/", {
             params: {
@@ -14,6 +13,7 @@ export const authAPI = {
         })
     }
 }
+
 type AuthResponseType = {
     access_token: string
     refresh_token: string

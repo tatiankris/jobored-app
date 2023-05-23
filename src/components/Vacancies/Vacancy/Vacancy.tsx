@@ -1,8 +1,8 @@
-import {Card, Group, Text, UnstyledButton, createStyles } from '@mantine/core'
-import { IconMapPin, IconPointFilled } from '@tabler/icons-react'
+import {Card, Group, Text, UnstyledButton, createStyles} from '@mantine/core'
+import {IconMapPin, IconPointFilled} from '@tabler/icons-react'
 import React from 'react'
-import { ReactComponent as IconStar } from '../../../assets/no_favorite_star.svg'
-import { ReactComponent as IconStarFavourite } from '../../../assets/favorite_star.svg'
+import {ReactComponent as IconStar} from '../../../assets/no_favorite_star.svg'
+import {ReactComponent as IconStarFavourite} from '../../../assets/favorite_star.svg'
 import {useNavigate} from "react-router-dom"
 import {JOB_SEARCH} from "../../MainComponent/MainComponent"
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks"
@@ -32,14 +32,14 @@ function Vacancy({ id,variant, profession, town, typeOfWork, paymentFrom, paymen
     const adaptiveFontInPage = iSmallScreen ? '16px' : '20px'
     const adaptiveLineHeightPage = iSmallScreen ? '20px' : '34px'
 
-    const useStyles = createStyles((theme) => ({
+    const useStyles = createStyles(() => ({
             vacancy: {
                 minHeight: variant === 'in-list' ? '137px' : '157px',
                 margin: variant === 'in-list' ? '0 0 16px 0' : '0 0 20px 0',
                 ":hover": {cursor: 'pointer'}
             },
             name: {
-                fontSize: iSmallScreen ? '16px' :'20px',
+                fontSize: iSmallScreen ? '16px' : '20px',
                 fontWeight: variant === 'in-list' ? 'bold' : 'bolder',
                 color: variant === 'in-list' ? 'rgba(94, 150, 252, 1)' : 'rgba(35, 33, 52, 1)',
                 lineHeight: variant === 'in-list' ? '24px' : adaptiveLineHeightPage,
@@ -76,7 +76,7 @@ function Vacancy({ id,variant, profession, town, typeOfWork, paymentFrom, paymen
                 marginRight: '11.33px'
             },
             location: {
-                fontSize:  adaptiveFontInList,
+                fontSize: adaptiveFontInList,
                 fontWeight: 'normal',
                 lineHeight: '20px'
             }
@@ -85,26 +85,25 @@ function Vacancy({ id,variant, profession, town, typeOfWork, paymentFrom, paymen
     const styles = useStyles().classes
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const idsFavorites = useAppSelector((state: AppRootStateType) => state.favoritesReducer.idsFavorites)
     const isFavourite = idsFavorites ? idsFavorites.find((m) => m === id) : null
 
-    const navigate = useNavigate()
-    const handleNavigate = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-
+    const handleNavigate = () => {
         navigate(JOB_SEARCH + `/${id}`)
     }
 
     const handleDeleteFavorite = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation()
-       dispatch(deleteFavoriteTC(id))
+        dispatch(deleteFavoriteTC(id))
     }
-    const handleSetFavorite = (e:  React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+
+    const handleSetFavorite = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation()
         dispatch(setFavoriteTC(props.vacancyObject))
     }
 
     const getPayment = () => {
-
         if (paymentFrom > 0 && paymentTo > 0 && paymentTo !== paymentFrom) {
             return `${paymentFrom + ' - ' + paymentTo}`
         } else if (paymentFrom < 0 && paymentTo < 0) {
@@ -114,32 +113,32 @@ function Vacancy({ id,variant, profession, town, typeOfWork, paymentFrom, paymen
         } else {
             return `${paymentFrom > 0 ? 'от ' + paymentFrom : ''} ${paymentTo > 0 ? 'до ' + paymentTo : ''}`
         }
-
     }
 
     return (
-       <Card data-elem={`vacancy-${id}`} padding={'24px'} radius={'12px'} className={styles.vacancy} onClick={handleNavigate}>
+        <Card data-elem={`vacancy-${id}`} padding={'24px'} radius={'12px'} className={styles.vacancy}
+              onClick={handleNavigate}>
             <div className={styles.nameGroup}>
-                <Text className={styles.name} >
+                <Text className={styles.name}>
                     {profession}
                 </Text>
-                <UnstyledButton data-elem={`${id}-shortlist-button`} onClick={isFavourite ? handleDeleteFavorite : handleSetFavorite} className={styles.iconStar}>
-                    {isFavourite ? <IconStarFavourite  /> : <IconStar />}
+                <UnstyledButton data-elem={`${id}-shortlist-button`}
+                                onClick={isFavourite ? handleDeleteFavorite : handleSetFavorite}
+                                className={styles.iconStar}>
+                    {isFavourite ? <IconStarFavourite/> : <IconStar/>}
                 </UnstyledButton>
             </div>
-
-           {
-               (paymentFrom + paymentTo) > 0
-                   ? <Group className={styles.groupInfo} spacing={12}>
-                       <Text className={styles.salary}>{`з/п ${getPayment()} ${currency}`}</Text>
-                       <IconPointFilled className={styles.iconPoint} size={'1rem'} />
-                       <Text className={styles.day}>{typeOfWork}</Text>
-                   </Group>
-                   : <Group className={styles.groupInfo} spacing={12}>
-                       <Text className={styles.day}>{typeOfWork}</Text>
-                   </Group>
-           }
-            <Text className={styles.location}><IconMapPin className={styles.iconMap} size={'1.4rem'} />{town}</Text>
+            {(paymentFrom + paymentTo) > 0
+                ? <Group className={styles.groupInfo} spacing={12}>
+                    <Text className={styles.salary}>{`з/п ${getPayment()} ${currency}`}</Text>
+                    <IconPointFilled className={styles.iconPoint} size={'1rem'}/>
+                    <Text className={styles.day}>{typeOfWork}</Text>
+                </Group>
+                : <Group className={styles.groupInfo} spacing={12}>
+                    <Text className={styles.day}>{typeOfWork}</Text>
+                </Group>
+            }
+            <Text className={styles.location}><IconMapPin className={styles.iconMap} size={'1.4rem'}/>{town}</Text>
         </Card>
     )
 }

@@ -1,5 +1,5 @@
-import {Button, Input } from '@mantine/core'
-import { IconSearch } from '@tabler/icons-react'
+import {Button, Input} from '@mantine/core'
+import {IconSearch} from '@tabler/icons-react'
 import React, {useState} from 'react'
 import style from './SearchField.module.css'
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks"
@@ -26,21 +26,26 @@ function SearchField() {
     const onSearchHandler = () => {
         dispatch(setKeywordAC(value))
     }
+
     const keyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
         e.key === 'Enter' && onSearchHandler()
     }
 
     return (
-            <Input size={iSmallScreen ? 'md' : 'lg'} data-elem={"search-input"}
-                   className={style.searchField}  radius={'md'}
-                   placeholder={'Введите название вакансии'}
-                   icon={<IconSearch size={iSmallScreen ? '1rem' : '1.5rem'} />}
-                   rightSection={!iSmallerScreen && <Button data-elem={"search-button"} onClick={onSearchHandler} className={style.buttonSearch}>Поиск</Button>}
-                   rightSectionWidth={'100px'}
-                   value={value}
-                   onChange={onChangeHandler}
-                   onKeyPress={keyPressHandler}
-            />
+        <Input size={iSmallScreen ? 'md' : 'lg'} data-elem={"search-input"}
+               className={style.searchField} radius={'md'}
+               placeholder={'Введите название вакансии'}
+               icon={<IconSearch size={iSmallScreen ? '1rem' : '1.5rem'}/>}
+               rightSection={!iSmallerScreen &&
+                   <Button data-elem={"search-button"} onClick={onSearchHandler} className={style.buttonSearch}>
+                       Поиск
+                   </Button>
+               }
+               rightSectionWidth={'100px'}
+               value={value}
+               onChange={onChangeHandler}
+               onKeyPress={keyPressHandler}
+        />
 
     )
 }

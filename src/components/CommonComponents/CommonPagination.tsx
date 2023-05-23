@@ -1,4 +1,4 @@
-import { Pagination } from '@mantine/core'
+import {Pagination} from '@mantine/core'
 import React from 'react'
 import style from './CommonPagination.module.css'
 import {useMediaQuery} from "@mantine/hooks"
@@ -9,7 +9,7 @@ type CommonPaginationPropsType = {
     value: number
 }
 
-function CommonPagination({value, pages, handlePageChange, ...props }: CommonPaginationPropsType) {
+function CommonPagination({value, pages, handlePageChange, ...props}: CommonPaginationPropsType) {
 
     const iSmallScreen = useMediaQuery('(max-width: 560px)')
     const iSmallerScreen = useMediaQuery('(max-width: 350px)')
@@ -20,7 +20,7 @@ function CommonPagination({value, pages, handlePageChange, ...props }: CommonPag
                     onChange={handlePageChange}
                     className={style.pagination}
                     total={Math.ceil(pages)}
-                    withControls={iSmallerScreen ? false : true}
+                    withControls={!iSmallerScreen}
         />
     )
 }

@@ -16,58 +16,59 @@ import {Button, Group, Modal} from "@mantine/core"
 function JobSearchPage() {
 
     const dispatch = useAppDispatch()
+    const isInitialized = useAppSelector((state: AppRootStateType) => state.appReducer.isInitialized)
     const catalogues = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.cataloguesList)
     const vacancies = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.vacancies)
     const searchParams = useAppSelector((state: AppRootStateType) => state.searchReducer)
+    const pages = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.pages)
+    const page = useAppSelector((state: AppRootStateType) => state.searchReducer.page)
+
     const iSmallScreen = useMediaQuery('(max-width: 946px)')
-    const isInitialized = useAppSelector((state: AppRootStateType) => state.appReducer.isInitialized)
 
     useEffect(() => {
         isInitialized && dispatch(getCataloguesTC())
-    }, [isInitialized])
-    // console.log('searchParams', searchParams)
+    }, [isInitialized, dispatch])
 
     useEffect(() => {
         isInitialized && dispatch(getVacanciesTC())
-    }, [isInitialized,searchParams])
-
-    const pages = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.pages)
-    const page = useAppSelector((state: AppRootStateType) => state.searchReducer.page)
+    }, [isInitialized, searchParams, dispatch])
 
     const handlePageChange = (value: number) => {
         const page = value - 1
         dispatch(setVacanciesPage(page))
     }
 
+    const [paginationValue, setPaginationValue] = useState(page + 1)
 
-    const [value, setValue] = useState(page+1)
     useEffect(() => {
-        setValue(page+1)
+        setPaginationValue(page + 1)
     }, [page])
 
-    const [opened, { open, close }] = useDisclosure(false)
+    const [opened, {open, close}] = useDisclosure(false)
     return (
         <CommonContainer page={'jobSearch'}>
             <div className={style.jobSearch}>
                 {iSmallScreen
                     ? <Modal opened={opened} onClose={close}>
-                        <SearchFilters close={close} cataloguesData={catalogues} />
-                </Modal>
-                : <SearchFilters cataloguesData={catalogues} />
+                        <SearchFilters close={close} cataloguesData={catalogues}/>
+                    </Modal>
+                    : <SearchFilters cataloguesData={catalogues}/>
                 }
-                {iSmallScreen && <Group position="center">
-                    <Button variant={'light'} onClick={open}>Фильтры</Button>
-
-                </Group>}
-
+                {iSmallScreen
+                    && <Group position="center">
+                        <Button variant={'light'} onClick={open}>Фильтры</Button>
+                    </Group>
+                }
                 <div className={style.group}>
-                        <SearchField/>
-                        {
-                            vacancies.length > 0
-                            ? <VacanciesList vacancies={vacancies}/>
-                            : <EmptyPage page={'search'}/>
-                        }
-                    {pages > 1 && <CommonPagination value={value} pages={pages} handlePageChange={handlePageChange}/>}
+                    <SearchField/>
+                    {vacancies.length > 0
+                        ? <VacanciesList vacancies={vacancies}/>
+                        : <EmptyPage page={'search'}/>
+                    }
+                    {pages > 1
+                        &&
+                        <CommonPagination value={paginationValue} pages={pages} handlePageChange={handlePageChange}/>
+                    }
                 </div>
             </div>
         </CommonContainer>

@@ -1,6 +1,5 @@
 import {instance} from "./request-instances"
-import {AccessTokenType} from "../store/reducers/auth-reducer";
-
+import {AccessTokenType} from "../store/reducers/auth-reducer"
 
 
 export const vacanciesAPI = {

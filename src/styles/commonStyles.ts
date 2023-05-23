@@ -1,8 +1,6 @@
 import { createStyles } from '@mantine/core'
 
-
-
-export const useStyles = createStyles((theme) => ({
+export const useStyles = createStyles(() => ({
     app: {
         position: 'relative',
         backgroundColor: '#F5F5F5',

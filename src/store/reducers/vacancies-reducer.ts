@@ -1,5 +1,5 @@
 import {AppRootStateType, AppThunk} from "../store"
-import {CatalogueItemType, VacanciesListType, VacancyType, vacanciesAPI } from "../../api/vacancies-api"
+import {CatalogueItemType, VacanciesListType, VacancyType, vacanciesAPI} from "../../api/vacancies-api"
 import {AxiosError} from "axios"
 import {setAppErrorAC, setAppStatusAC} from "./app-reducer"
 
@@ -17,7 +17,7 @@ const InitialState = {
     pages: 0
 } as InitialStateType
 
-export const vacanciesReducer = (state:InitialStateType = InitialState, action: VacanciesActionType):InitialStateType => {
+export const vacanciesReducer = (state: InitialStateType = InitialState, action: VacanciesActionType): InitialStateType => {
     switch (action.type) {
         case 'SET_CATALOGUES': {
             return {...state, cataloguesList: action.cataloguesList}
@@ -56,6 +56,7 @@ export const setCurrentVacancyAC = (vacancy: VacancyType) => {
         vacancy
     } as const
 }
+
 const setPagesCountAC = (pages: number) => {
     return {
         type: 'SET_PAGES_COUNT',
@@ -63,16 +64,18 @@ const setPagesCountAC = (pages: number) => {
     } as const
 }
 
-export const getCataloguesTC = (): AppThunk => (dispatch, getState: () => AppRootStateType) => {
-
+export const getCataloguesTC = (): AppThunk => (dispatch,
+                                                getState: () => AppRootStateType) => {
     dispatch(setAppStatusAC('loading'))
     const token = getState().authReducer.token
     vacanciesAPI.getVacanciesCatalogues(token)
         .then((res) => {
-            const cataloguesList = res.data.map(m => {return {title: m.title, key: m.key}})
+            const cataloguesList = res.data.map(m => {
+                return {title: m.title, key: m.key}
+            })
             dispatch(setCataloguesAC(cataloguesList))
         })
-        .catch((err: AxiosError<{message: string}>) => {
+        .catch((err: AxiosError<{ message: string }>) => {
             const error = err.message
             dispatch(setAppErrorAC(error ? error : 'Some error occurred'))
 
@@ -82,16 +85,13 @@ export const getCataloguesTC = (): AppThunk => (dispatch, getState: () => AppRoo
         })
 }
 
-
-export const getVacanciesTC = (page?: number): AppThunk => (dispatch,
-                                               getState: () => AppRootStateType ) => {
+export const getVacanciesTC = (): AppThunk => (dispatch,
+                                                            getState: () => AppRootStateType) => {
     dispatch(setAppStatusAC('loading'))
-    const params  = getState().searchReducer
+    const params = getState().searchReducer
     const token = getState().authReducer.token
-    console.log(params)
     vacanciesAPI.searchVacancies(params, token)
         .then((res) => {
-
             const allPages = res.data.total / 4
             const pages = allPages > 125 ? 125 : allPages
             dispatch(setPagesCountAC(pages))
@@ -100,7 +100,7 @@ export const getVacanciesTC = (page?: number): AppThunk => (dispatch,
             dispatch(setVacanciesAC(vacancies))
 
         })
-        .catch((err: AxiosError<{message: string}>) => {
+        .catch((err: AxiosError<{ message: string }>) => {
             const error = err.message
             dispatch(setAppErrorAC(error ? error : 'Some error occurred'))
 
@@ -110,29 +110,23 @@ export const getVacanciesTC = (page?: number): AppThunk => (dispatch,
         })
 }
 
-
-
-
-export const getCurrentVacancyTC = (id: string): AppThunk => (dispatch
-, getState: () => AppRootStateType
-) => {
+export const getCurrentVacancyTC = (id: string): AppThunk => (dispatch,
+                                                              getState: () => AppRootStateType) => {
     dispatch(setAppStatusAC('loading'))
     const token = getState().authReducer.token
     vacanciesAPI.getVacancy(id, token)
         .then((res) => {
             const vacancy = res.data
             dispatch(setCurrentVacancyAC(vacancy))
-
         })
-        .catch((err: AxiosError<{message: string}>) => {
+        .catch((err: AxiosError<{ message: string }>) => {
             const error = err.message
             dispatch(setAppErrorAC(error ? error : 'Some error occurred'))
-
         })
         .finally(() => {
             dispatch(setAppStatusAC('prepared'))
         })
 }
 
-export type VacanciesActionType = ReturnType< typeof setCataloguesAC> | ReturnType< typeof setVacanciesAC>
-    | ReturnType< typeof setCurrentVacancyAC> | ReturnType< typeof setPagesCountAC>
+export type VacanciesActionType = ReturnType<typeof setCataloguesAC> | ReturnType<typeof setVacanciesAC>
+    | ReturnType<typeof setCurrentVacancyAC> | ReturnType<typeof setPagesCountAC>

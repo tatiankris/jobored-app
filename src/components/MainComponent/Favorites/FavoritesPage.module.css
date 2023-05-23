@@ -1,15 +1,10 @@
 .favoritesPage {
-
     width: 100%;
     height: calc(100vh - 70px);
-
-
 }
 
 .pagination {
-
     position: absolute;
     bottom: 0;
     left: 38%;
-
 }

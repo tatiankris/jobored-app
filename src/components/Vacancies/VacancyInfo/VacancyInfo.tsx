@@ -5,6 +5,7 @@ import style from './VacancyInfo.module.css'
 type VacancyInfoPropsType = {
     text: string
 }
+
 function VacancyInfo({text, ...props}: VacancyInfoPropsType) {
 
     return (

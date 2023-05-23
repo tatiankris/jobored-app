@@ -7,10 +7,10 @@ type PageContainerPropsType = {
 
 function PageContainer({children, ...props}: PageContainerPropsType) {
 
-    const { classes } = useStyles()
+    const {classes} = useStyles()
 
     return (
-        <div className={classes.pageContainer} >
+        <div className={classes.pageContainer}>
             {children}
         </div>
     )

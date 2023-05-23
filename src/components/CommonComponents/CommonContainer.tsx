@@ -7,7 +7,6 @@ type CommonContainerPropsType = {
     page: string
 }
 
-
 function CommonContainer({children, page, ...props}: CommonContainerPropsType) {
 
     const { classes } = useStyles()

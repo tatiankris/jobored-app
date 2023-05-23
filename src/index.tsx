@@ -13,12 +13,11 @@ const root = ReactDOM.createRoot(
 )
 root.render(
     <BrowserRouter>
-        <Provider  store={store}>
+        <Provider store={store}>
             <MantineProvider withGlobalStyles withNormalizeCSS>
                 <App/>
             </MantineProvider>
         </Provider>
-
     </BrowserRouter>
 )
 

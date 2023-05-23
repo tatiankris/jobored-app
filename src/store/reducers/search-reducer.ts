@@ -1,34 +1,31 @@
-import {FilterValuesType} from "../../components/MainComponent/JobSearch/SearchFilters"
-
 type FiltersSearchType = {
     catalogues: number | null,
     payment_from: number | "",
     payment_to: number | ""
-
 }
+
 type InitialStateType = {
     keyword: string,
-
-        catalogues: number | null,
-        payment_from: number | "",
-        payment_to: number | ""
-
+    catalogues: number | null,
+    payment_from: number | "",
+    payment_to: number | ""
     page: number
     count: 4,
     published: 1
 }
+
 const InitialState = {
     keyword: "",
-        catalogues: null,
-        payment_from: '',
-        payment_to: '',
+    catalogues: null,
+    payment_from: '',
+    payment_to: '',
     page: 0,
     count: 4,
     published: 1
 } as InitialStateType
 
 
-export const searchReducer = (state: InitialStateType = InitialState, action: SearchActionType):InitialStateType => {
+export const searchReducer = (state: InitialStateType = InitialState, action: SearchActionType): InitialStateType => {
     switch (action.type) {
         case 'SET_FILTER_VALUES': {
             const {catalogues, payment_from, payment_to} = action.values
@@ -57,22 +54,26 @@ export const setFiltersAC = (values: FiltersSearchType) => {
         values
     } as const
 }
+
 export const resetFiltersAC = () => {
     return {
         type: 'RESET_FILTERS_VALUES'
     } as const
 }
+
 export const setKeywordAC = (keyword: string) => {
     return {
         type: 'SET_KEYWORD',
         keyword
     } as const
 }
+
 export const resetAllSearchAC = () => {
     return {
         type: 'RESET_ALL_SEARCH'
     } as const
 }
+
 export const setVacanciesPage = (page: number) => {
     return {
         type: 'SET_VACANCIES_PAGE',
