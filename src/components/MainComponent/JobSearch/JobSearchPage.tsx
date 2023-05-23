@@ -49,13 +49,14 @@ function JobSearchPage() {
     return (
         <CommonContainer page={'jobSearch'}>
             <div className={style.jobSearch}>
-                {iSmallScreen ? <Modal opened={opened} onClose={close}>
-                        <SearchFilters cataloguesData={catalogues} />
+                {iSmallScreen
+                    ? <Modal opened={opened} onClose={close}>
+                        <SearchFilters close={close} cataloguesData={catalogues} />
                 </Modal>
                 : <SearchFilters cataloguesData={catalogues} />
                 }
                 {iSmallScreen && <Group position="center">
-                    <Button onClick={open}>Фильтры</Button>
+                    <Button variant={'light'} onClick={open}>Фильтры</Button>
 
                 </Group>}
 

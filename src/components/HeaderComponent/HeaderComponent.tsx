@@ -8,7 +8,7 @@ import {FAVORITES, JOB_SEARCH} from "../MainComponent/MainComponent"
 import {useMediaQuery} from "@mantine/hooks"
 import { IconMenu } from "@tabler/icons-react"
 import {useAppDispatch} from "../../hooks/hooks"
-import {deleteToken} from "../../store/reducers/auth-reducer"
+import {resetAllSearchAC} from "../../store/reducers/search-reducer";
 
 function HeaderComponent() {
 
@@ -21,13 +21,13 @@ function HeaderComponent() {
 
     const inClickHandler = () => {
         navigate('/')
+        dispatch(resetAllSearchAC())
     }
 
     return <Header height={84} p={0} >
         <CommonContainer page={'header'}>
             <div className={style.headerBlock}>
                 <Logo className={style.logo} onClick={inClickHandler}/>
-                <button onClick={() => {dispatch(deleteToken())}}>delete</button>
                    {iSmallScreen
                        ? <Menu opened={opened} onChange={setOpened} shadow="md" width={200}>
                            <Menu.Target>

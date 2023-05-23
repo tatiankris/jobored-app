@@ -21,7 +21,6 @@ function FavoritesPage() {
 
     useEffect(() => {
         isInitialized && dispatch(getFavoritesTC())
-        // dispatch(getIdsFavoritesTC())
     }, [page, idsFavorites, isInitialized])
 
     const pages = useAppSelector((state: AppRootStateType) => state.favoritesReducer.pages)

@@ -37,10 +37,6 @@ const setAccessTokenAC = (token: any) => {
     }
 }
 
-export const deleteToken = (): AppThunk => (dispatch) => {
-    localStorage.removeItem('access_token')
-}
-
 export const initializeTC =  (): AppThunk  => async (dispatch) => {
     dispatch(setAppStatusAC('loading'))
 // debugger

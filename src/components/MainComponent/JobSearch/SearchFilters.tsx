@@ -10,12 +10,13 @@ import { CatalogueItemType } from '../../../api/vacancies-api'
 import { useMediaQuery } from '@mantine/hooks'
 
 export type FilterValuesType = {
-    catalogues: null | string,
-    payment_from: number | '',
+    catalogues: null | string
+    payment_from: number | ''
     payment_to: number | ''
 }
 type SearchFiltersPropsType  = {
-    cataloguesData: Array<CatalogueItemType>
+    cataloguesData: Array<CatalogueItemType>,
+    close?: () => void
 }
 function SearchFilters({cataloguesData, ...props}: SearchFiltersPropsType) {
 
@@ -41,6 +42,7 @@ function SearchFilters({cataloguesData, ...props}: SearchFiltersPropsType) {
             payment_from: payment_from,
             payment_to: payment_to
         }))
+        props.close && props.close()
     }
 
 
@@ -56,7 +58,10 @@ function SearchFilters({cataloguesData, ...props}: SearchFiltersPropsType) {
     }
 
     const onResetHandler = () => {
-        form.reset()
+        console.log('form.valuesBEFORE', form.values)
+        form.setValues({catalogues: null, payment_from: '', payment_to: ''})
+        console.log('form.valuesAFTER', form.values)
+
         setValue(null)
         dispatch(resetFiltersAC())
     }
@@ -104,7 +109,7 @@ function SearchFilters({cataloguesData, ...props}: SearchFiltersPropsType) {
                     placeholder="От"
                     max={2000000}
                     min={0}
-                    step={100}
+                    step={1000}
                     {...form.getInputProps('payment_from')}
                 />
                 <NumberInput
@@ -120,7 +125,7 @@ function SearchFilters({cataloguesData, ...props}: SearchFiltersPropsType) {
                     placeholder="До"
                     max={2000000}
                     min={0}
-                    step={100}
+                    step={1000}
                     {...form.getInputProps('payment_to')}
                 />
                 <Button data-elem={"search-button"} className={style.buttonSubmit} type="submit">Применить</Button>
