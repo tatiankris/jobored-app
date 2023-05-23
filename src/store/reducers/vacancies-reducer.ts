@@ -63,10 +63,11 @@ const setPagesCountAC = (pages: number) => {
     } as const
 }
 
-export const getCataloguesTC = (): AppThunk => (dispatch) => {
+export const getCataloguesTC = (): AppThunk => (dispatch, getState: () => AppRootStateType) => {
 
     dispatch(setAppStatusAC('loading'))
-    vacanciesAPI.getVacanciesCatalogues()
+    const token = getState().authReducer.token
+    vacanciesAPI.getVacanciesCatalogues(token)
         .then((res) => {
             const cataloguesList = res.data.map(m => {return {title: m.title, key: m.key}})
             dispatch(setCataloguesAC(cataloguesList))
@@ -86,8 +87,9 @@ export const getVacanciesTC = (page?: number): AppThunk => (dispatch,
                                                getState: () => AppRootStateType ) => {
     dispatch(setAppStatusAC('loading'))
     const params  = getState().searchReducer
+    const token = getState().authReducer.token
     console.log(params)
-    vacanciesAPI.searchVacancies(params)
+    vacanciesAPI.searchVacancies(params, token)
         .then((res) => {
 
             const allPages = res.data.total / 4
@@ -111,9 +113,12 @@ export const getVacanciesTC = (page?: number): AppThunk => (dispatch,
 
 
 
-export const getCurrentVacancyTC = (id: string): AppThunk => (dispatch) => {
+export const getCurrentVacancyTC = (id: string): AppThunk => (dispatch
+, getState: () => AppRootStateType
+) => {
     dispatch(setAppStatusAC('loading'))
-    vacanciesAPI.getVacancy(id)
+    const token = getState().authReducer.token
+    vacanciesAPI.getVacancy(id, token)
         .then((res) => {
             const vacancy = res.data
             dispatch(setCurrentVacancyAC(vacancy))

@@ -2,17 +2,22 @@
 export type AppStatusType = 'loading' | 'prepared'
 
 type InitialStateType = {
+    isInitialized: boolean,
     status: AppStatusType,
     errors: Array<string>
 }
 
 const InitialState = {
+    isInitialized: false,
     status: 'prepared',
     errors: []
 } as InitialStateType
 
 export const appReducer = (state: InitialStateType = InitialState, action: AppActionType):InitialStateType => {
     switch (action.type) {
+        case 'APP_INITIALIZE': {
+            return {...state, isInitialized: true}
+        }
         case 'APP_STATUS': {
             return {...state, status: action.status}
         }
@@ -30,7 +35,11 @@ export const appReducer = (state: InitialStateType = InitialState, action: AppAc
     }
 
 }
-
+export const isInitializedAC = () => {
+    return {
+        type: 'APP_INITIALIZE'
+    } as const
+}
 export const setAppStatusAC = (status: AppStatusType) => {
     return {
         type: 'APP_STATUS',
@@ -49,4 +58,4 @@ export const deleteAppErrorAC = () => {
     } as const
 }
 
-export type AppActionType = ReturnType< typeof setAppStatusAC> | ReturnType<typeof setAppErrorAC> | ReturnType<typeof deleteAppErrorAC>
+export type AppActionType = ReturnType< typeof setAppStatusAC> | ReturnType< typeof isInitializedAC> | ReturnType<typeof setAppErrorAC> | ReturnType<typeof deleteAppErrorAC>

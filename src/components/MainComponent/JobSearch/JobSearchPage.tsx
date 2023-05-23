@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import SearchFilters from './SearchFilters'
 import VacanciesList from "../../Vacancies/VacanciesLisl"
 import SearchField from "./SearchField"
@@ -20,20 +20,30 @@ function JobSearchPage() {
     const vacancies = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.vacancies)
     const searchParams = useAppSelector((state: AppRootStateType) => state.searchReducer)
     const iSmallScreen = useMediaQuery('(max-width: 946px)')
+    const isInitialized = useAppSelector((state: AppRootStateType) => state.appReducer.isInitialized)
 
     useEffect(() => {
-        dispatch(getCataloguesTC())
-    }, [])
+        isInitialized && dispatch(getCataloguesTC())
+    }, [isInitialized])
+    // console.log('searchParams', searchParams)
 
     useEffect(() => {
-        dispatch(getVacanciesTC())
-    }, [searchParams])
+        isInitialized && dispatch(getVacanciesTC())
+    }, [isInitialized,searchParams])
 
     const pages = useAppSelector((state: AppRootStateType) => state.vacanciesReducer.pages)
+    const page = useAppSelector((state: AppRootStateType) => state.searchReducer.page)
+
     const handlePageChange = (value: number) => {
         const page = value - 1
         dispatch(setVacanciesPage(page))
     }
+
+
+    const [value, setValue] = useState(page+1)
+    useEffect(() => {
+        setValue(page+1)
+    }, [page])
 
     const [opened, { open, close }] = useDisclosure(false)
     return (
@@ -56,7 +66,7 @@ function JobSearchPage() {
                             ? <VacanciesList vacancies={vacancies}/>
                             : <EmptyPage page={'search'}/>
                         }
-                    {pages > 0.9 && <CommonPagination pages={pages} handlePageChange={handlePageChange}/>}
+                    {pages > 1 && <CommonPagination value={value} pages={pages} handlePageChange={handlePageChange}/>}
                 </div>
             </div>
         </CommonContainer>

@@ -27,7 +27,6 @@ type VacancyPropsType = {
 function Vacancy({ id,variant, profession, town, typeOfWork, paymentFrom, paymentTo, currency, ...props}: VacancyPropsType) {
 
     const iSmallScreen = useMediaQuery('(max-width: 560px)')
-    console.log('iSmallScreen', iSmallScreen)
 
     const adaptiveFontInList = iSmallScreen ? '14px' : '16px'
     const adaptiveFontInPage = iSmallScreen ? '16px' : '20px'

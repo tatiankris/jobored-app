@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import style from './SearchFilters.module.css'
 import {useForm} from "@mantine/form"
 import {Button, Card, NumberInput, NumberInputHandlers, Select, Title, UnstyledButton} from "@mantine/core"
@@ -10,7 +10,7 @@ import { CatalogueItemType } from '../../../api/vacancies-api'
 import { useMediaQuery } from '@mantine/hooks'
 
 export type FilterValuesType = {
-    catalogues: null | number,
+    catalogues: null | string,
     payment_from: number | '',
     payment_to: number | ''
 }
@@ -25,7 +25,7 @@ function SearchFilters({cataloguesData, ...props}: SearchFiltersPropsType) {
 
     const form = useForm({
         initialValues: {
-            catalogues: catalogues,
+            catalogues: catalogues ? String(catalogues) : null,
             payment_from: payment_from,
             payment_to: payment_to
         } as FilterValuesType,
@@ -36,22 +36,33 @@ function SearchFilters({cataloguesData, ...props}: SearchFiltersPropsType) {
     const onSubmitHandler = () => {
 
         const {catalogues, payment_from, payment_to} = form.values
-
         dispatch(setFiltersAC({
-            catalogues: catalogues ? +catalogues : null,
-            payment_from,
-            payment_to
+            catalogues: catalogues ? Number(catalogues) : null,
+            payment_from: payment_from,
+            payment_to: payment_to
         }))
     }
 
-    const onResetHandler = () => {
-        form.reset()
-        dispatch(resetFiltersAC())
-    }
+
 
     const salaryToHandler = useRef<NumberInputHandlers>()
     const salaryFromHandler = useRef<NumberInputHandlers>()
 
+    const [value, setValue] = useState<string | null>(form.values.catalogues);
+    const selectHandler = (e: string | null) => {
+        form.setValues({...form.values, catalogues: e ? e : null})
+        setValue(e)
+
+    }
+
+    const onResetHandler = () => {
+        form.reset()
+        setValue(null)
+        dispatch(resetFiltersAC())
+    }
+
+
+    console.log({...form.getInputProps('catalogues')})
     return (
         <Card className={style.searchFilters}  padding="20px" radius="md" withBorder>
             <form onSubmit={form.onSubmit(onSubmitHandler)}>
@@ -63,6 +74,7 @@ function SearchFilters({cataloguesData, ...props}: SearchFiltersPropsType) {
                     <Title className={style.inputLabel}>Отрасль</Title>
 
                 <Select
+
                     size={iSmallScreen ? 'sm' : 'md'}
                     data-elem={"industry-select"}
                     searchable
@@ -72,7 +84,10 @@ function SearchFilters({cataloguesData, ...props}: SearchFiltersPropsType) {
                     rightSection={<IconChevronDown className={style.icon} size="1.2rem" />}
                     styles={{ rightSection: { pointerEvents: 'none' } }}
                     rightSectionWidth={40}
-                    {...form.getInputProps('catalogues')}
+                    value={value}
+                    onChange={selectHandler}
+
+
                 />
                 <Title className={style.inputLabel}>Оклад</Title>
                 <div className={style.smallScreenGroup}>

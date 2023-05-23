@@ -1,20 +1,21 @@
 import {instance} from "./request-instances"
+import {AccessTokenType} from "../store/reducers/auth-reducer";
 
 
 
 export const vacanciesAPI = {
 
-    getVacanciesCatalogues() {
-        return instance.get<CataloguesResponseType>("catalogues/")
+    getVacanciesCatalogues(token: AccessTokenType) {
+        return instance.get<CataloguesResponseType>("catalogues/", {headers: {Authorization: `${token?.token_type} ${token?.access_token}`}})
     },
-    searchVacancies(params: SearchVacanciesParamsType) {
-        return instance.get("vacancies/", {params})
+    searchVacancies(params: SearchVacanciesParamsType, token: AccessTokenType) {
+        return instance.get("vacancies/", {params, headers: {Authorization: `${token?.token_type} ${token?.access_token}`}})
     },
-    getFavorites(params: GetFavoritesParamsType) {
-        return instance.get("vacancies/", {params})
+    getFavorites(params: GetFavoritesParamsType, token: AccessTokenType) {
+        return instance.get("vacancies/", {params, headers: {Authorization: `${token?.token_type} ${token?.access_token}`}})
     },
-    getVacancy(id: string | number) {
-        return instance.get(`vacancies/${id}/`)
+    getVacancy(id: string | number, token: AccessTokenType) {
+        return instance.get(`vacancies/${id}/`, {headers: {Authorization: `${token?.token_type} ${token?.access_token}`}})
     }
 
 }

@@ -1,5 +1,11 @@
 import {FilterValuesType} from "../../components/MainComponent/JobSearch/SearchFilters"
 
+type FiltersSearchType = {
+    catalogues: number | null,
+    payment_from: number | "",
+    payment_to: number | ""
+
+}
 type InitialStateType = {
     keyword: string,
 
@@ -26,10 +32,10 @@ export const searchReducer = (state: InitialStateType = InitialState, action: Se
     switch (action.type) {
         case 'SET_FILTER_VALUES': {
             const {catalogues, payment_from, payment_to} = action.values
-            return {...state, catalogues, payment_from, payment_to} as InitialStateType
+            return {...state, catalogues, payment_from, payment_to, page: 0} as InitialStateType
         }
         case 'RESET_FILTERS_VALUES': {
-            return {...state, catalogues: null, payment_from: '', payment_to: ''}
+            return {...state, catalogues: null, payment_from: '', payment_to: '', page: 0}
         }
         case 'RESET_ALL_SEARCH': {
             return {...state, catalogues: null, payment_from: '', payment_to: '', keyword: ''}
@@ -45,7 +51,7 @@ export const searchReducer = (state: InitialStateType = InitialState, action: Se
     }
 }
 
-export const setFiltersAC = (values: FilterValuesType) => {
+export const setFiltersAC = (values: FiltersSearchType) => {
     return {
         type: 'SET_FILTER_VALUES',
         values

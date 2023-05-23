@@ -105,13 +105,10 @@ export const getIdsFavoritesTC = (): AppThunk => (dispatch,
 export const getFavoritesTC = (): AppThunk => (dispatch,
                                                getState: () => AppRootStateType ) => {
     dispatch(setAppStatusAC('loading'))
-
-    // const local = localStorage.getItem('favorites_vacancies')
-    // const idsFavorites = local ? JSON.parse(local) : []
-
+    const token = getState().authReducer.token
     const {page, count, idsFavorites} = getState().favoritesReducer
 
-    vacanciesAPI.getFavorites({ page, count, 'ids': idsFavorites })
+    vacanciesAPI.getFavorites({ page, count, 'ids': idsFavorites }, token)
         .then((res) => {
 
             const allPages = res.data.total / 4

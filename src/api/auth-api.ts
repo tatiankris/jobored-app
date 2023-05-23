@@ -1,9 +1,9 @@
-import {instanceAuth} from "./request-instances"
+import {instance} from "./request-instances"
 
 export const authAPI = {
 
     getAuth() {
-        return instanceAuth.get<AuthResponseType>("oauth2/password/", {
+        return instance.get<AuthResponseType>("oauth2/password/", {
             params: {
                 login: 'sergei.stralenia@gmail.com',
                 password: 'paralect123',
