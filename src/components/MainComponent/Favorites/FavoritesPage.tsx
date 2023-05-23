@@ -31,8 +31,7 @@ function FavoritesPage() {
         setPaginationValue(page + 1)
     }, [page])
 
-
-    if (favorites.length === 0) {
+    if (idsFavorites.length === 0) {
         return <EmptyPage page={'favorites'}/>
     }
     return (

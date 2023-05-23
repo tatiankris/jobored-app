@@ -98,7 +98,12 @@ export const getFavoritesTC = (): AppThunk => (dispatch,
     const token = getState().authReducer.token
     const {page, count, idsFavorites} = getState().favoritesReducer
 
-    vacanciesAPI.getFavorites({page, count, 'ids': idsFavorites}, token)
+    if (!idsFavorites.length) {
+        dispatch(setFavoritesAC([]))
+        // dispatch(setPagesCountFavoritesAC(0))
+        dispatch(setAppStatusAC('prepared'))
+    }
+    idsFavorites.length && vacanciesAPI.getFavorites({page, count, 'ids': idsFavorites}, token)
         .then((res) => {
             const allPages = res.data.total / 4
             const pages = allPages > 125 ? 125 : allPages
