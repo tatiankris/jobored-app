@@ -53,7 +53,7 @@ function HeaderComponent() {
                     : <div className={style.links}>
                         <Link
                             className={location.includes(JOB_SEARCH) ? ` ${style.currentLink} ${style.link}` : style.link}
-                            to={JOB_SEARCH}>Поиск вакансий
+                            to={JOB_SEARCH}>Поиск Вакансий
                         </Link>
                         <Link className={location === FAVORITES ? `${style.currentLink} ${style.link} ` : style.link}
                               to={FAVORITES}>Избранное
