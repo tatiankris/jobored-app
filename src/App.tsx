@@ -25,9 +25,9 @@ function App() {
 
     const dispatch = useAppDispatch()
     useEffect(() => {
-        // dispatch(deleteToken())
-        !isInitialized && dispatch(authTC())
-        dispatch(getIdsFavoritesTC())
+        dispatch(deleteToken())
+        // !isInitialized && dispatch(authTC())
+        // dispatch(getIdsFavoritesTC())
     }, [isInitialized])
 
     return (
