@@ -80,10 +80,11 @@ const setFavoriteAC = (id: number) => {
     } as const
 }
 
-const deleteFavoriteAC = (id: number) => {
+const deleteFavoriteAC = (id: number, page?: number) => {
     return {
         type: 'DELETE_FAVORITE',
-        id
+        id,
+        page
     } as const
 }
 
@@ -95,15 +96,16 @@ export const getIdsFavoritesTC = (): AppThunk => (dispatch) => {
 export const getFavoritesTC = (): AppThunk => (dispatch,
                                                getState: () => AppRootStateType) => {
     dispatch(setAppStatusAC('loading'))
+
     const token = getState().authReducer.token
     const {page, count, idsFavorites} = getState().favoritesReducer
 
     if (!idsFavorites.length) {
         dispatch(setFavoritesAC([]))
-        // dispatch(setPagesCountFavoritesAC(0))
         dispatch(setAppStatusAC('prepared'))
     }
-    idsFavorites.length && vacanciesAPI.getFavorites({page, count, 'ids': idsFavorites}, token)
+    idsFavorites.length && vacanciesAPI.getFavorites(
+        {page, count, 'ids': idsFavorites}, token)
         .then((res) => {
             const allPages = res.data.total / 4
             const pages = allPages > 125 ? 125 : allPages
@@ -128,11 +130,17 @@ export const setFavoriteTC = (favorite: VacancyType): AppThunk => (dispatch) => 
     dispatch(setFavoriteAC(favorite.id))
 }
 
-export const deleteFavoriteTC = (id: number): AppThunk => (dispatch) => {
+export const deleteFavoriteTC = (id: number): AppThunk => (dispatch,
+                                                           getState: () => AppRootStateType) => {
     const local = localStorage.getItem('favorites_vacancies')
-    const favorites = local ? JSON.parse(local) : []
-    const newFavorites = favorites.filter((e: number) => e !== id)
+    const favoritesLocal = local ? JSON.parse(local) : []
+    const newFavorites = favoritesLocal.filter((e: number) => e !== id)
     localStorage.setItem('favorites_vacancies', JSON.stringify(newFavorites))
+    const {favorites, page} = getState().favoritesReducer
+    if  (favorites.length === 1 && page > 0) {
+        const newPage = page - 1
+        dispatch(setFavoritesPageAC(newPage))
+    }
     dispatch(deleteFavoriteAC(id))
 }
 

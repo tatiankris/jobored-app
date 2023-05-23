@@ -18,6 +18,8 @@ function App() {
 
     const dispatch = useAppDispatch()
     useEffect(() => {
+        // localStorage.removeItem('access_token')
+        // localStorage.setItem('access_token', JSON.stringify({access_token: 'ljlkjlkj'}))
         !isInitialized && dispatch(initializeTC())
         dispatch(getIdsFavoritesTC())
     }, [isInitialized, dispatch])
