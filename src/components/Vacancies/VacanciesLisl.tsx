@@ -9,7 +9,7 @@ type VacanciesListPropsType = {
 function VacanciesList({vacancies, ...props}: VacanciesListPropsType) {
 
     return (
-        <div className={"VacanciesList"}>
+        <div className={'VacanciesList'}>
             {
                 vacancies && vacancies.map((m) => {
                     return <Vacancy vacancyObject={m} key={m.id} id={m.id} profession={m.profession}

@@ -31,6 +31,8 @@ function Vacancy({ id,variant, profession, town, typeOfWork, paymentFrom, paymen
     const adaptiveFontInList = iSmallScreen ? '14px' : '16px'
     const adaptiveFontInPage = iSmallScreen ? '16px' : '20px'
     const adaptiveLineHeightPage = iSmallScreen ? '20px' : '34px'
+    const adaptiveNameInList = iSmallScreen ? '16px' : '20px'
+    const adaptiveNameInPage = iSmallScreen ? '20px' : '28px'
 
     const useStyles = createStyles(() => ({
             vacancy: {
@@ -39,7 +41,7 @@ function Vacancy({ id,variant, profession, town, typeOfWork, paymentFrom, paymen
                 ":hover": {cursor: 'pointer'}
             },
             name: {
-                fontSize: iSmallScreen ? '16px' : '20px',
+                fontSize: variant === 'in-list' ? adaptiveNameInList : adaptiveNameInPage,
                 fontWeight: variant === 'in-list' ? 'bold' : 'bolder',
                 color: variant === 'in-list' ? 'rgba(94, 150, 252, 1)' : 'rgba(35, 33, 52, 1)',
                 lineHeight: variant === 'in-list' ? '24px' : adaptiveLineHeightPage,
@@ -122,7 +124,7 @@ function Vacancy({ id,variant, profession, town, typeOfWork, paymentFrom, paymen
                 <Text className={styles.name}>
                     {profession}
                 </Text>
-                <UnstyledButton data-elem={`${id}-shortlist-button`}
+                <UnstyledButton data-elem={`vacancy-${id}-shortlist-button`}
                                 onClick={isFavourite ? handleDeleteFavorite : handleSetFavorite}
                                 className={styles.iconStar}>
                     {isFavourite ? <IconStarFavourite/> : <IconStar/>}

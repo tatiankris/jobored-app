@@ -18,6 +18,7 @@ export const useStyles = createStyles(() => ({
         height: '100%'
     },
     container: {
+        display: 'flex',
         position: 'relative',
         minHeight: 'calc(100vh - 168px)'
     }
