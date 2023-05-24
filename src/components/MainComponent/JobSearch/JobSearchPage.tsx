@@ -60,11 +60,13 @@ function JobSearchPage() {
                     </Group>
                 }
                 <div className={style.group}>
-                    <SearchField/>
-                    {vacancies.length > 0
-                        ? <VacanciesList vacancies={vacancies}/>
-                        : <EmptyPage page={'search'}/>
-                    }
+                    <div>
+                        <SearchField/>
+                        {vacancies.length > 0
+                            ? <VacanciesList vacancies={vacancies}/>
+                            : <EmptyPage page={'search'}/>
+                        }
+                    </div>
                     {pages > 1
                         &&
                         <CommonPagination value={paginationValue} pages={pages} handlePageChange={handlePageChange}/>

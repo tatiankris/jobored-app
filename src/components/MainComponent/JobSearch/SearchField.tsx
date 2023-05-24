@@ -3,7 +3,7 @@ import {IconSearch} from '@tabler/icons-react'
 import React, {useState} from 'react'
 import style from './SearchField.module.css'
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks"
-import {setKeywordAC} from "../../../store/reducers/search-reducer"
+import {setKeywordAC, setVacanciesPage} from "../../../store/reducers/search-reducer"
 import {AppRootStateType} from "../../../store/store"
 import {useMediaQuery} from "@mantine/hooks"
 
@@ -21,10 +21,13 @@ function SearchField() {
         setValue(value)
         if (value === '') {
             dispatch(setKeywordAC(value))
+            dispatch(setVacanciesPage(0))
         }
     }
+
     const onSearchHandler = () => {
         dispatch(setKeywordAC(value))
+        dispatch(setVacanciesPage(0))
     }
 
     const keyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
