@@ -1,6 +1,7 @@
 import React from 'react'
 import Vacancy from "./Vacancy/Vacancy"
 import {VacanciesListType} from "../../api/vacancies-api"
+import style from './VacanciesList.module.css'
 
 type VacanciesListPropsType = {
     vacancies: VacanciesListType
@@ -9,7 +10,7 @@ type VacanciesListPropsType = {
 function VacanciesList({vacancies, ...props}: VacanciesListPropsType) {
 
     return (
-        <div className={'VacanciesList'}>
+        <div className={style.list}>
             {
                 vacancies && vacancies.map((m) => {
                     return <Vacancy vacancyObject={m} key={m.id} id={m.id} profession={m.profession}
